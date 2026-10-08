@@ -9,8 +9,13 @@ description = "一个面向学习和实战的 AI Agent 练习工程"
 requires-python = ">=3.10"
 
 [project.scripts]
-build-your-agent = "build_your_agent.cli:main"
+build-your-agent = "cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["main", "cli", "agent", "config", "log_event", "model"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["tools", "tools.*"]
 
