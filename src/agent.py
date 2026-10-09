@@ -14,7 +14,7 @@ def run_agent(user_input: str, request_id: str) -> str:
     config = load_config()
     # system 规定助手的行为，user 保存用户的问题。每次请求重新建立上下文。
     messages = [
-        {"role": "system", "content": "你是一个简洁的本地助手。需要操作本地环境时调用 bash 工具，根据实际执行结果回答。命令在用户当前工作目录执行。"},
+        {"role": "system", "content": "你是一个 AI 助手。根据用户的请求，按需使用工具完成任务，并根据实际结果回答。"},
         {"role": "user", "content": user_input},
     ]
     # 一轮代表一次模型请求；执行工具后需要再请求模型，让它理解执行结果。
