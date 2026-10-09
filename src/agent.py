@@ -4,7 +4,7 @@ import json
 import subprocess
 from dataclasses import asdict
 from config import load_config
-from log_event import log_event
+from log_event import LogEvent, log_event
 from model import call_model
 from tools.bash_tool import TOOL, execute
 
@@ -19,7 +19,7 @@ def run_agent(user_input: str, request_id: str) -> str:
     ]
     # 一轮代表一次模型请求；执行工具后需要再请求模型，让它理解执行结果。
     for round_number in range(1, config["AGENT_MAX_ROUNDS"] + 1):
-        log_event(request_id, "ROUND_STARTED", {"round": round_number})
+        log_event(request_id, LogEvent.ROUND_STARTED, {"round": round_number})
         message = call_model(messages, request_id, [TOOL], config)
         # 模型既可以直接回答，也可以返回 tool_calls，要求程序代它执行工具。
         calls = message.get("tool_calls") or []
@@ -46,7 +46,7 @@ def run_agent(user_input: str, request_id: str) -> str:
                 # arguments 是 JSON 字符串，需要先解析成字典才能读取 command。
                 arguments = json.loads(function["arguments"])
                 command = arguments["command"]
-                log_event(request_id, "TOOL_STARTED", {"command": command}, "bash")
+                log_event(request_id, LogEvent.TOOL_STARTED, {"command": command}, "bash")
                 # asdict 将 BashResult 数据类转换成可序列化的普通字典。
                 output = asdict(execute(command))
             # 工具错误也作为结果交给模型，让它解释原因或调整下一步。
@@ -54,7 +54,7 @@ def run_agent(user_input: str, request_id: str) -> str:
                 output = {"error": "命令执行超过 30 秒，已停止等待。"}
             except (ValueError, KeyError, TypeError, OSError) as error:
                 output = {"error": str(error)}
-            log_event(request_id, "TOOL_RESULT", output, "bash")
+            log_event(request_id, LogEvent.TOOL_RESULT, output, "bash")
             # tool_call_id 把结果与原调用关联；content 按接口要求使用字符串。
             messages.append({"role": "tool", "tool_call_id": call["id"],
                              "content": json.dumps(output, ensure_ascii=False)})
