@@ -1,7 +1,7 @@
 """终端负责输入输出，处理逻辑独立放在 reply 中。"""
 import http.client
 from model import call_model
-from model import load_env_config as load_config
+from config import load_config
 
 
 def reply(user_input: str, request_id: str = "") -> str:

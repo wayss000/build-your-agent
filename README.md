@@ -14,13 +14,13 @@
 | P01 环境准备 | `study-p01` | 环境准备 |
 | P03 开发 CLI | `study-p03` | 开发 CLI |
 | P04 调用模型 | `study-p04` | 调用模型 |
-| P05 模型配置 | 待发布 | 模型配置 |
+| P05 模型配置 | `study-p05` | 模型配置 |
 | P06 日志 | 待发布 | 日志 |
 | P07 Bash 工具 | 待发布 | Bash 工具 |
 | P08 模型调用工具 | 待发布 | 模型调用工具 |
 | P09 Agent 循环 | 待发布 | Agent 循环 |
 
-当前阶段：P04 调用模型。
+当前阶段：P05 模型配置。
 
 ## 跟随课程
 
@@ -28,7 +28,7 @@
 git clone https://github.com/wayss000/build-your-agent.git
 cd build-your-agent
 git fetch origin --tags
-git switch --detach study-p04
+git switch --detach study-p05
 # 想修改本课代码，创建自己的练习分支
 git switch -c my-lesson
 ```
@@ -44,7 +44,7 @@ python3 src/main.py
 
 输入 `exit` 或按 Ctrl+C / Ctrl+D 退出。
 
-本课使用环境变量 `NEW_API_KEY`、`MODEL_URL`、`MODEL_NAME`；在自己的终端设置，不把密钥提交到 Git。
-MODEL_URL 是完整 HTTPS Chat Completions 地址，接口调用可能产生费用。
+先复制 `.env.example` 为 `.env`，填写密钥、完整 HTTPS 接口地址和模型名称。
+环境变量优先于文件；不提交 `.env`，接口调用可能产生费用。
 
 [教程目录](docs/user_docs/README.md) · [课程章节目录](docs/user_docs/课程章节目录.md)

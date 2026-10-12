@@ -44,17 +44,3 @@ def call_model(messages: list[dict], request_id: str, tools: list[dict], config:
     # 无论成功还是异常都关闭连接，避免资源泄漏。
     finally:
         connection.close()
-
-
-def load_env_config() -> dict:
-    """先从环境变量读配置；下一课再抽出配置模块与 .env。"""
-    import os
-    values = {key: os.environ.get(key, "") for key in ("NEW_API_KEY", "MODEL_URL", "MODEL_NAME")}
-    for key, value in values.items():
-        if not value:
-            raise ValueError(f"请设置环境变量 {key}。")
-    url = urlsplit(values["MODEL_URL"])
-    if url.scheme != "https" or not url.hostname or url.username or url.password or url.fragment:
-        raise ValueError("MODEL_URL 必须是完整的 HTTPS 接口地址。")
-    values["MODEL_TEMPERATURE"] = 0.7
-    return values
