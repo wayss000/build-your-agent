@@ -1,29 +1,39 @@
-# Build Your Agent
+# Build Your Agent：循序渐进的教学分支
 
-这个项目的目标不是一上来写一个“大而全”的 Agent 框架，而是把一个最小 chat 程序，分阶段练成一个可以加载 Skill、调用工具、接入 MCP、拥有记忆、可观测、可扩展的实战型 AI 智能体。
+面向新手，从终端程序逐步写出自己的 Agent。本分支只开发到 P09。
 
-会按照以下章节进行：
+## 选择版本
+
+- main：现有完整实现。
+- study_step：按课程顺序开发，每个代码章节完成后打 tag。
+- 原理课没有独立 tag；P00、P02 可使用 study-p01。
+- P10 实践可使用 study-p09；后续 Skill、记忆暂不实现。
+
+| 章节 | tag | 能力 |
+| --- | --- | --- |
+| P01 环境准备 | `study-p01` | 环境准备 |
+| P03 开发 CLI | 待发布 | 开发 CLI |
+| P04 调用模型 | 待发布 | 调用模型 |
+| P05 模型配置 | 待发布 | 模型配置 |
+| P06 日志 | 待发布 | 日志 |
+| P07 Bash 工具 | 待发布 | Bash 工具 |
+| P08 模型调用工具 | 待发布 | 模型调用工具 |
+| P09 Agent 循环 | 待发布 | Agent 循环 |
+
+当前阶段：P01 环境准备。
+
+## 跟随课程
+
+```bash
+git clone https://github.com/wayss000/build-your-agent.git
+cd build-your-agent
+git fetch origin --tags
+git switch --detach study-p01
+# 想修改本课代码，创建自己的练习分支
+git switch -c my-lesson
 ```
-1. 用Python写一个在终端运行的对话框
-  1. 用户输入什么，程序返回：hello，你输入的是：xxx。
-2. 在第一节的基础上，增加调用模型
-  1. 用户输入什么，程序直接发给模型，大模型，再输出给用户
-3. 在第二节的基础上，把模型的配置信息，放到 config.yaml 中
-  1. 模型配置，配置化，从火山上申请不同的模型，然后改配置生效。
-4. 开发一个可以执行bash的工具
-  1. 硬编码，用户输入命令，可以调用工具（无LLM调用）
-5. 使用大模型的返回调用工具
-  1. 用户输入，使用大模型生成调用内容，再调用工具，执行大模型的输出
-6. Hermes是如何注册工具的？
-  1. 不写代码，源码解读，源码分析。看看Hermes是如何调用工具的
-7. 把工具注册，放到配置文件中（待定）
-  1. ToDo，后面的？？
-8. 记忆
-  1. 如何通过持续的对话，让Agent更了解自己
-9. 让Agent访问外部数据
-  1. CLI方式
-  2. MCP方式
-  3. 
-10. 单机部署
-11. 生产环境多Server部署
-```
+
+切换章节前先提交自己的修改。tag 是固定快照；`git switch study_step` 查看教学最新版。
+Python 需要 3.10+；P07 起需要 Bash，Windows 建议使用 WSL。
+
+[教程目录](docs/user_docs/README.md) · [课程章节目录](docs/user_docs/课程章节目录.md)
