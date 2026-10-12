@@ -5,15 +5,12 @@ from config import load_config
 from time import perf_counter
 from uuid import uuid4
 from log_event import LogEvent, log_event
+from agent import run_agent
 
 
 def reply(user_input: str, request_id: str = "") -> str:
     """处理一次输入；后续章节逐步替换回显逻辑。"""
-    message = call_model([{"role": "user", "content": user_input}], request_id, [], load_config())
-    content = message.get("content")
-    if not isinstance(content, str):
-        raise ValueError("模型没有返回文本回复。")
-    return content
+    return run_agent(user_input, request_id)
 
 
 def main() -> int:
