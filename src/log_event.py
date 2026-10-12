@@ -19,6 +19,21 @@ class LogEvent(str, Enum):
     RESULT_FAILED = "RESULT_FAILED"  # 本次用户请求处理失败，记录错误类型和耗时。
     RESULT_RETURNED = "RESULT_RETURNED"  # 最终回答已输出给用户，记录回答和耗时。
 
+    @property
+    def description(self) -> str:
+        """集中维护中文说明，保留原有英文枚举值，方便检索日志。"""
+        return {
+            LogEvent.INPUT_RECEIVED: "已收到用户输入",
+            LogEvent.ROUND_STARTED: "开始一轮 Agent 循环",
+            LogEvent.MODEL_REQUEST: "准备发送模型请求",
+            LogEvent.MODEL_RESPONSE_WAITING: "模型请求已发送，等待响应",
+            LogEvent.MODEL_RESPONSE: "已收到模型响应",
+            LogEvent.TOOL_STARTED: "开始处理工具调用",
+            LogEvent.TOOL_RESULT: "已获得工具执行结果",
+            LogEvent.RESULT_FAILED: "本次请求处理失败",
+            LogEvent.RESULT_RETURNED: "最终回答已输出给用户",
+        }[self]
+
 
 def log_event(request_id: str, event: LogEvent, details: object = "", module: str = "agent") -> None:
     """追加一条事件日志；字典等结构自动格式化为易读的 JSON。"""
@@ -30,5 +45,5 @@ def log_event(request_id: str, event: LogEvent, details: object = "", module: st
     timestamp = datetime.now().isoformat(timespec="milliseconds")
     # a 表示追加而非覆盖；with 会在写完后自动关闭文件。
     with path.open("a", encoding="utf-8") as file:
-        # 使用 value 写入原始事件名，日志中不会出现 LogEvent.MODEL_REQUEST 等前缀。
-        file.write(f"{timestamp} | {request_id} | {module} | {event.value}\n{text}\n\n")
+        # 英文事件名便于检索，旁边的中文说明便于直接阅读。
+        file.write(f"{timestamp} | {request_id} | {module} | {event.value}（{event.description}）\n{text}\n\n")
