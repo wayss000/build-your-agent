@@ -18,9 +18,9 @@
 | P06 日志 | `study-p06` | 日志 |
 | P07 Bash 工具 | `study-p07` | Bash 工具 |
 | P08 模型调用工具 | `study-p08` | 模型调用工具 |
-| P09 Agent 循环 | 待发布 | Agent 循环 |
+| P09 Agent 循环 | `study-p09` | Agent 循环 |
 
-当前阶段：P08 模型调用工具。
+当前阶段：P09 Agent 循环。
 
 ## 跟随课程
 
@@ -28,7 +28,7 @@
 git clone https://github.com/wayss000/build-your-agent.git
 cd build-your-agent
 git fetch origin --tags
-git switch --detach study-p08
+git switch --detach study-p09
 # 想修改本课代码，创建自己的练习分支
 git switch -c my-lesson
 ```
@@ -52,6 +52,6 @@ python3 src/main.py
 Bash 直接执行命令，没有沙箱，仅在可信本地环境练习；默认超时 30 秒。
 每次命令独立启动，`cd` 不影响下一次调用。
 
-本课只执行一批模型工具调用并显示结果，不将结果回传模型。
+工具结果回传模型继续处理，默认最多调用模型 5 轮；每次输入仍使用独立上下文。
 
 [教程目录](docs/user_docs/README.md) · [课程章节目录](docs/user_docs/课程章节目录.md)

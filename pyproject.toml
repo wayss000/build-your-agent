@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "build-your-agent"
+version = "0.1.0"
+description = "从零写出自己的 Agent：教学分支"
+requires-python = ">=3.10"
+
+[project.scripts]
+build-your-agent = "cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["main", "cli", "agent", "config", "log_event", "model"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["tools", "tools.*"]

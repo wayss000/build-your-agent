@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def load_config() -> dict:
     """合并默认值、.env 和环境变量，再校验并转换配置类型。"""
     # 覆盖顺序：默认值 < .env < 环境变量。文件缺失时也可只用环境变量。
-    values = {"MODEL_TEMPERATURE": "0.7"}
+    values = {"MODEL_TEMPERATURE": "0.7", "AGENT_MAX_ROUNDS": "5"}
     path = ROOT / ".env"
     if path.exists():
         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -24,7 +24,7 @@ def load_config() -> dict:
             key, value = line.split("=", 1)
             values[key.strip()] = value.strip().strip("\"'")
     # 仅覆盖程序支持的配置项，不把整个系统环境混入配置。
-    for key in ("NEW_API_KEY", "MODEL_URL", "MODEL_NAME", "MODEL_TEMPERATURE"):
+    for key in ("NEW_API_KEY", "MODEL_URL", "MODEL_NAME", "MODEL_TEMPERATURE", "AGENT_MAX_ROUNDS"):
         if key in os.environ:
             values[key] = os.environ[key]
     for key in ("NEW_API_KEY", "MODEL_URL", "MODEL_NAME"):
@@ -37,6 +37,9 @@ def load_config() -> dict:
     # 文件和环境变量读出的都是字符串，使用前转换为浮点数和整数。
     try:
         values["MODEL_TEMPERATURE"] = float(values["MODEL_TEMPERATURE"])
+        values["AGENT_MAX_ROUNDS"] = int(values["AGENT_MAX_ROUNDS"])
     except ValueError:
-        raise ValueError("MODEL_TEMPERATURE 必须是数字。") from None
+        raise ValueError("MODEL_TEMPERATURE 必须是数字，AGENT_MAX_ROUNDS 必须是整数。") from None
+    if values["AGENT_MAX_ROUNDS"] < 1:
+        raise ValueError("AGENT_MAX_ROUNDS 必须大于零。")
     return values

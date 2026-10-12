@@ -1,6 +1,6 @@
 # P07 Bash工具
 
-> 已实现，参考 `src/tools/bash_tool.py`。
+> 使用 study-p07：独立工具，尚未接入模型。
 
 ## 本章目标
 
