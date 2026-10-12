@@ -12,7 +12,7 @@
 | 章节 | tag | 能力 |
 | --- | --- | --- |
 | P01 环境准备 | `study-p01` | 环境准备 |
-| P03 开发 CLI | 待发布 | 开发 CLI |
+| P03 开发 CLI | `study-p03` | 开发 CLI |
 | P04 调用模型 | 待发布 | 调用模型 |
 | P05 模型配置 | 待发布 | 模型配置 |
 | P06 日志 | 待发布 | 日志 |
@@ -20,7 +20,7 @@
 | P08 模型调用工具 | 待发布 | 模型调用工具 |
 | P09 Agent 循环 | 待发布 | Agent 循环 |
 
-当前阶段：P01 环境准备。
+当前阶段：P03 开发 CLI。
 
 ## 跟随课程
 
@@ -28,12 +28,20 @@
 git clone https://github.com/wayss000/build-your-agent.git
 cd build-your-agent
 git fetch origin --tags
-git switch --detach study-p01
+git switch --detach study-p03
 # 想修改本课代码，创建自己的练习分支
 git switch -c my-lesson
 ```
 
 切换章节前先提交自己的修改。tag 是固定快照；`git switch study_step` 查看教学最新版。
 Python 需要 3.10+；P07 起需要 Bash，Windows 建议使用 WSL。
+
+## 运行
+
+```bash
+python3 src/main.py
+```
+
+输入 `exit` 或按 Ctrl+C / Ctrl+D 退出。
 
 [教程目录](docs/user_docs/README.md) · [课程章节目录](docs/user_docs/课程章节目录.md)
