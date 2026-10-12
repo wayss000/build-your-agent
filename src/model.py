@@ -3,6 +3,7 @@
 import http.client
 import json
 from urllib.parse import urlsplit
+from log_event import LogEvent, log_event
 
 
 def call_model(messages: list[dict], request_id: str, tools: list[dict], config: dict) -> dict:
@@ -14,6 +15,7 @@ def call_model(messages: list[dict], request_id: str, tools: list[dict], config:
                "temperature": config["MODEL_TEMPERATURE"]}
     if tools:
         payload["tools"] = tools
+    log_event(request_id, LogEvent.MODEL_REQUEST, payload, "model")
     # 网络调用设置超时，避免连接或读取长期阻塞终端。
     connection = http.client.HTTPSConnection(url.hostname, url.port, timeout=60)
     try:
@@ -25,14 +27,16 @@ def call_model(messages: list[dict], request_id: str, tools: list[dict], config:
             "Authorization": f"Bearer {config['NEW_API_KEY']}",
             "Content-Type": "application/json",
         })
+        log_event(request_id, LogEvent.MODEL_RESPONSE_WAITING, module="model")
         # request 返回仅表示请求已发送；此处等待响应并读取完整内容。
         response = connection.getresponse()
         raw = response.read().decode("utf-8", errors="replace")
         # 响应保留用于排障，但不记录服务端可能回显的认证密钥。
         raw = raw.replace(config["NEW_API_KEY"], "[REDACTED]")
+        log_event(request_id, LogEvent.MODEL_RESPONSE, f"HTTP {response.status}\n{raw}", "model")
         # HTTP 成功状态码为 2xx；失败响应已记录，终端只显示简明提示。
         if not 200 <= response.status < 300:
-            raise ValueError(f"模型接口返回 HTTP {response.status}。")
+            raise ValueError(f"模型接口返回 HTTP {response.status}，详情见 logs/app.log。")
         try:
             # Chat Completions 的回复位于 choices 列表的第一项中。
             message = json.loads(raw)["choices"][0]["message"]
@@ -40,7 +44,7 @@ def call_model(messages: list[dict], request_id: str, tools: list[dict], config:
                 raise ValueError
             return message
         except (ValueError, KeyError, IndexError, TypeError):
-            raise ValueError("模型响应格式异常。") from None
+            raise ValueError("模型响应格式异常，详情见 logs/app.log。") from None
     # 无论成功还是异常都关闭连接，避免资源泄漏。
     finally:
         connection.close()
