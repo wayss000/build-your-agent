@@ -16,11 +16,11 @@
 | P04 调用模型 | `study-p04` | 调用模型 |
 | P05 模型配置 | `study-p05` | 模型配置 |
 | P06 日志 | `study-p06` | 日志 |
-| P07 Bash 工具 | 待发布 | Bash 工具 |
+| P07 Bash 工具 | `study-p07` | Bash 工具 |
 | P08 模型调用工具 | 待发布 | 模型调用工具 |
 | P09 Agent 循环 | 待发布 | Agent 循环 |
 
-当前阶段：P06 日志。
+当前阶段：P07 Bash 工具。
 
 ## 跟随课程
 
@@ -28,7 +28,7 @@
 git clone https://github.com/wayss000/build-your-agent.git
 cd build-your-agent
 git fetch origin --tags
-git switch --detach study-p06
+git switch --detach study-p07
 # 想修改本课代码，创建自己的练习分支
 git switch -c my-lesson
 ```
@@ -48,5 +48,13 @@ python3 src/main.py
 环境变量优先于文件；不提交 `.env`，接口调用可能产生费用。
 
 日志追加到 `logs/app.log`，使用请求 ID 追踪；日志包含对话和命令输出，分享前检查敏感内容。
+
+Bash 直接执行命令，没有沙箱，仅在可信本地环境练习；默认超时 30 秒。
+每次命令独立启动，`cd` 不影响下一次调用。
+
+本课工具尚未接入模型，独立验证：
+```bash
+PYTHONPATH=src python3 -c "from tools.bash_tool import execute; print(execute('pwd'))"
+```
 
 [教程目录](docs/user_docs/README.md) · [课程章节目录](docs/user_docs/课程章节目录.md)
